@@ -26,12 +26,20 @@ $result=mysqli_query($conn,$existsql);
 
 if($exists==false)
 {
+  try{
+    mysqli_begin_transaction($conn);
   $sql="INSERT INTO registeration (name,email, pass, mobilenumber,gender)VALUES('$name','$email','$pass','$mobilenumber','$gender')" ;
   $result=mysqli_query($conn,$sql);
+  mysqli_commit($conn);
+  }
   if($result)
   {
     $showAlert=true;
     header("location:login.php");
+  }
+  catch(exception $ex)
+  {
+    mysqli_rollback($conn);
   }
 }
 else{
@@ -45,7 +53,7 @@ else{
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Comaptible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel ="stylesheet" type="text/css" href="register.css"/>
+    <link rel ="stylesheet" type="text/css" href="style.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <title> Registeration form </title>
 </head>
